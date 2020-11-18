@@ -39,7 +39,7 @@
           :max="limit"
           step="5000"
           class="handle"
-          :style="{ width: `${height - 2}rem` }"
+          :style="{ width: `${height - 1}rem` }"
           :value="target"
           @change="setPosition($event)"
         />
@@ -204,20 +204,26 @@ export default {
 
 .handle {
   z-index: 999;
-  margin-left: 3px;
+  margin-top: -1rem;
+  margin: 0 auto;
   color: gray;
   border-radius: 30%;
-  position: relative;
   cursor: pointer;
   transform-origin: 0 0;
   transform: rotate(90deg);
 }
-
 input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  position: relative;
-  top: 0px;
-  z-index: 1;
+  width: 1rem;
+  height: 2rem;
+  border: 1px solid #00001e;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, 0);
+  border: 0;
+  width: 100%;
   cursor: pointer;
 }
 </style>
