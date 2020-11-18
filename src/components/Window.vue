@@ -33,6 +33,16 @@
           class="blind pending"
           ref="windowTarget"
         ></div>
+        <b-form-input
+          type="range"
+          :min="0"
+          :max="limit"
+          step="5000"
+          class="handle"
+          :style="{ width: `${height - 2}rem` }"
+          :value="target"
+          @change="setPosition($event)"
+        />
       </div>
     </div>
 
@@ -105,11 +115,13 @@ export default {
       this.$refs.window.style.transform = `scaleY(${scale})`
       this.$refs.windowTarget.style.transform = `scaleY(${scaleTarget})`
     },
-    up() {
-      ws.send(`up:${this.motorId}:${this.minMotorStep}`)
+    up(numOfSteps) {
+      const steps = numOfSteps || this.minMotorStep
+      ws.send(`up:${this.motorId}:${steps}`)
     },
-    down() {
-      ws.send(`down:${this.motorId}:${this.minMotorStep}`)
+    down(numOfSteps) {
+      const steps = numOfSteps || this.minMotorStep
+      ws.send(`down:${this.motorId}:${steps}`)
     },
     stop() {
       ws.send(`stop:${this.motorId}`)
@@ -132,6 +144,13 @@ export default {
       const pass = this.$parent.$data.pass
       ws.send(`setIgnoreLimits:${this.ignoreLimits}:${sha256(pass).toString()}`)
       this.ignoreLimits = this.ignoreLimits === 1 ? 0 : 1
+    },
+    setPosition(pos) {
+      if (pos > this.position) {
+        this.down(pos - this.position)
+      } else if (pos < this.position) {
+        this.up(this.position - pos)
+      }
     }
   }
 }
@@ -176,10 +195,29 @@ export default {
     opacity: 0.9;
   }
   50% {
-    opacity: 0.7;
+    opacity: 0.5;
   }
   100% {
     opacity: 0.9;
   }
+}
+
+.handle {
+  z-index: 999;
+  margin-left: 3px;
+  color: gray;
+  border-radius: 30%;
+  position: relative;
+  cursor: pointer;
+  transform-origin: 0 0;
+  transform: rotate(90deg);
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  position: relative;
+  top: 0px;
+  z-index: 1;
+  cursor: pointer;
 }
 </style>
