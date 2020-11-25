@@ -15,8 +15,20 @@
       </b-col>
     </b-row>
     <b-row>
-      <Window ref="balcony" :width="10" :height="20" :motorId="0" />
-      <Window ref="window" :width="10" :height="11" :motorId="1" />
+      <Window
+        ref="balcony"
+        name="Balcony"
+        :width="10"
+        :height="20"
+        :motorId="0"
+      />
+      <Window
+        ref="window"
+        name="Window"
+        :width="10"
+        :height="11"
+        :motorId="1"
+      />
     </b-row>
   </b-container>
 </template>

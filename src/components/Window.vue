@@ -1,6 +1,6 @@
 <template>
   <b-col sm="6" class="text-center">
-    <h2>Window</h2>
+    <h2>{{ name }}</h2>
     <b-button-group vertical>
       <b-button variant="primary" @click="up(0)">
         Up
@@ -75,6 +75,10 @@ import sha256 from 'crypto-js/sha256'
 export default {
   name: 'Window',
   props: {
+    name: {
+      type: String,
+      default: 'Window'
+    },
     width: {
       type: Number,
       default: 10
@@ -127,10 +131,10 @@ export default {
       ws.send(`stop:${this.motorId}`)
     },
     openBlind() {
-      ws.send(`open:${this.motorId}`)
+      ws.send(`openBlind:${this.motorId}`)
     },
     closeBlind() {
-      ws.send(`close:${this.motorId}`)
+      ws.send(`closeBlind:${this.motorId}`)
     },
     setTopPosition() {
       const pass = document.getElementById('pass').value
