@@ -1,52 +1,60 @@
 <template>
-  <b-col sm="6" class="text-center">
+  <b-container fluid>
     <h2>{{ name }}</h2>
-    <b-button-group vertical>
-      <b-button variant="primary" @click="up(0)">
-        Up
-      </b-button>
-      <b-button variant="primary" @click="stop(0)">
-        stop
-      </b-button>
-      <b-button variant="secondary" @click="down(0)">
-        down
-      </b-button>
-    </b-button-group>
+    <b-row>
+      <b-col class="my-auto controls">
+        <b-button-group vertical>
+          <b-button variant="primary" @click="up(0)" size="sm">
+            Up
+          </b-button>
+          <b-button variant="dark" @click="stop(0)" size="sm">
+            stop
+          </b-button>
+          <b-button variant="primary" @click="down(0)" size="sm">
+            down
+          </b-button>
+        </b-button-group>
+      </b-col>
 
-    <b-button-group vertical>
-      <b-button variant="secondary" @click="openBlind(0)">
-        Open
-      </b-button>
-      <b-button variant="secondary" @click="closeBlind(0)">
-        Close
-      </b-button>
-    </b-button-group>
-
-    <div
-      class="window mt-3"
-      :style="{ width: `${width}rem`, height: `${height}rem` }"
-    >
-      <div class="frame">
-        <div class="blind" ref="window"></div>
+      <b-col>
         <div
-          v-show="target != position"
-          class="blind pending"
-          ref="windowTarget"
-        ></div>
-        <b-form-input
-          type="range"
-          :min="0"
-          :max="limit"
-          step="5000"
-          class="handle"
-          :style="{ width: `${height - 1}rem` }"
-          :value="target"
-          @change="setPosition($event)"
-        />
-      </div>
-    </div>
+          class="window mt-3"
+          :style="{ width: `${width}rem`, height: `${height}rem` }"
+        >
+          <div class="frame">
+            <div class="blind" ref="window"></div>
+            <div
+              v-show="target != position"
+              class="blind pending"
+              ref="windowTarget"
+            ></div>
+          </div>
+          <!-- <b-form-input
+            type="range"
+            :min="0"
+            :max="limit"
+            step="5000"
+            class="handle"
+            :style="{ height: `${height - 1}rem` }"
+            :value="target"
+            @change="setPosition($event)"
+          /> -->
+        </div>
+      </b-col>
 
-    <div class="w-100 mt-3">
+      <b-col class="my-auto controls">
+        <b-button-group vertical>
+          <b-button variant="dark" @click="openBlind(0)" size="sm">
+            Open
+          </b-button>
+          <b-button variant="dark" @click="closeBlind(0)" size="sm">
+            Close
+          </b-button>
+        </b-button-group>
+      </b-col>
+    </b-row>
+
+    <div class="w-100 mt-3" v-if="settings">
       <b-button-group vertical>
         <b-button variant="danger" @click="setTopPosition()">
           Set top position
@@ -59,13 +67,13 @@
         </b-button>
       </b-button-group>
     </div>
-    <div class="w-100 mt-5">
-      <b-badge>{{ position }}</b-badge>
+    <div class="w-100 mt-1">
+      Current position: <b-badge>{{ position }}</b-badge>
     </div>
-    <div class="w-100 mt-5">
-      <b-badge>{{ target }}</b-badge>
+    <div class="w-100 mt-1">
+      Target position: <b-badge>{{ target }}</b-badge>
     </div>
-  </b-col>
+  </b-container>
 </template>
 
 <script>
@@ -90,6 +98,10 @@ export default {
     motorId: {
       type: Number,
       default: 0
+    },
+    settings: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -171,7 +183,7 @@ export default {
   position: absolute;
   height: 100%;
   width: 100%;
-  border: 1rem solid #5f5f5f;
+  border: 1rem solid #5c5c5c;
   background-color: #d9f6ff;
   z-index: 1;
 }
@@ -182,6 +194,7 @@ export default {
   height: 100%;
   width: 100%;
   background-color: #a8a6b9;
+  background-repeat: repeat;
   border-bottom: none;
   transform: scaleY(0);
   transform-origin: top;
@@ -191,7 +204,17 @@ export default {
 .blind.pending {
   z-index: 10;
   background-color: #fbff1f;
+  background-image: none;
   animation: blinker 2s linear infinite;
+}
+
+.controls {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.controls button {
+  height: 4rem;
 }
 
 @keyframes blinker {
@@ -207,18 +230,19 @@ export default {
 }
 
 .handle {
+  width: 1rem;
+  margin-top: 0.5rem;
+  position: absolute;
+  right: -1.5rem;
   z-index: 999;
-  margin-top: -1rem;
-  margin: 0 auto;
   color: gray;
   border-radius: 30%;
+  transform: rotate(180deg);
   cursor: pointer;
-  transform-origin: 0 0;
-  transform: rotate(90deg);
+  -webkit-appearance: slider-vertical; /* WebKit */
 }
+
 input[type='range']::-webkit-slider-thumb {
-  width: 1rem;
-  height: 2rem;
   border: 1px solid #00001e;
   border-radius: 15px;
   cursor: pointer;
@@ -226,8 +250,6 @@ input[type='range']::-webkit-slider-thumb {
 
 input[type='range']::-webkit-slider-runnable-track {
   background: rgba(0, 0, 0, 0);
-  border: 0;
-  width: 100%;
   cursor: pointer;
 }
 </style>

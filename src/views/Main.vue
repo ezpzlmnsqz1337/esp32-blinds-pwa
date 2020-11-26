@@ -1,35 +1,54 @@
 <template>
-  <b-container fluid>
+  <b-container fluid class="text-center my-auto" style="height: 100%">
     <h1>Blinds control</h1>
-    <b-row>
-      <b-col sm="3" mt="5">
-        <div class="form-group">
-          <label for="pass">Password for calibration</label>
-          <b-form-input
-            type="password"
-            placeholder="Enter password..."
-            v-model="pass"
-            id="pass"
-          />
-        </div>
-      </b-col>
-    </b-row>
-    <b-row>
-      <Window
-        ref="balcony"
-        name="Balcony"
-        :width="10"
-        :height="20"
-        :motorId="0"
-      />
-      <Window
-        ref="window"
-        name="Window"
-        :width="10"
-        :height="11"
-        :motorId="1"
-      />
-    </b-row>
+    <b-tabs pills align="center" content-class="mt-3" class="mt-3" small>
+      <!-- Text slides with image -->
+      <b-tab title="Balcony">
+        <b-row>
+          <b-col sm="12" class="text-center">
+            <Window
+              ref="balcony"
+              name="Balcony"
+              :width="10"
+              :height="20"
+              :motorId="0"
+              :settings="pass.length > 5"
+            />
+          </b-col>
+        </b-row>
+      </b-tab>
+
+      <!-- Slides with custom text -->
+      <b-tab title="Window">
+        <b-row>
+          <b-col sm="12" class="text-center">
+            <Window
+              ref="window"
+              name="Window"
+              :width="10"
+              :height="11"
+              :motorId="1"
+              :settings="pass.length > 5"
+            />
+          </b-col>
+        </b-row>
+      </b-tab>
+      <b-tab title="Login">
+        <b-row>
+          <b-col sm="12" mt="5">
+            <div class="form-group">
+              <label for="pass">Password for calibration</label>
+              <b-form-input
+                type="password"
+                placeholder="Enter password..."
+                v-model="pass"
+                id="pass"
+              />
+            </div>
+          </b-col>
+        </b-row>
+      </b-tab>
+    </b-tabs>
   </b-container>
 </template>
 
@@ -45,7 +64,9 @@ export default {
   data() {
     return {
       ignoreLimits: 0,
-      pass: ''
+      pass: '',
+      slide: 0,
+      sliding: null
     }
   },
   created() {
@@ -70,6 +91,16 @@ export default {
           ignoreLimits
         })
       }
+    }
+  },
+  methods: {
+    onSlideStart(slide) {
+      console.log(slide)
+      this.sliding = true
+    },
+    onSlideEnd(slide) {
+      console.log(slide)
+      this.sliding = false
     }
   }
 }
