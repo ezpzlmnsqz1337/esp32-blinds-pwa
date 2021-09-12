@@ -109,7 +109,7 @@ export default {
       position: 0,
       target: 0,
       limit: 0,
-      ignoreLimits: false,
+      ignoreLimits: 0,
       minMotorStep: 5000
     }
   },
@@ -118,7 +118,7 @@ export default {
       this.position = opts.position
       this.target = opts.target
       this.limit = opts.limit
-      this.ignoreLimits = opts.ignoreLimits
+      // this.ignoreLimits = opts.ignoreLimits
 
       let scale = Math.fround(this.position / this.limit)
       if (scale > 1) scale = 1
@@ -157,7 +157,7 @@ export default {
       ws.send(`setLimit:${this.motorId}:${sha256(pass).toString()}`)
     },
     setIgnoreLimits() {
-      const pass = this.$parent.$data.pass
+      const pass = document.getElementById('pass').value
       ws.send(`setIgnoreLimits:${this.ignoreLimits}:${sha256(pass).toString()}`)
       this.ignoreLimits = this.ignoreLimits === 1 ? 0 : 1
     },

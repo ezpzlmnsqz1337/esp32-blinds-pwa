@@ -5,7 +5,7 @@
       <!-- Text slides with image -->
       <b-tab title="Balcony">
         <b-row>
-          <b-col sm="12" class="text-center">
+          <b-col class="text-center">
             <Window
               ref="balcony"
               name="Balcony"
@@ -21,7 +21,7 @@
       <!-- Slides with custom text -->
       <b-tab title="Window">
         <b-row>
-          <b-col sm="12" class="text-center">
+          <b-col class="text-center">
             <Window
               ref="window"
               name="Window"
@@ -35,7 +35,7 @@
       </b-tab>
       <b-tab title="Login">
         <b-row>
-          <b-col sm="12" mt="5">
+          <b-col mt="5">
             <div class="form-group">
               <label for="pass">Password for calibration</label>
               <b-form-input
