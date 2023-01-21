@@ -1,9 +1,3 @@
-const hostname =
-  window.location.hostname === 'ezpzlmnsqz1337.eu'
-    ? 'ezpzlmnsqz1337.eu'
-    : 'rolety'
+const ws = new WebSocket(`ws://192.168.0.180:8082`) // esp32 ip
 
-const ws = new WebSocket(`ws://${hostname}:8082`)
-// const ws = new WebSocket("ws://" + window.location.hostname + ":8085");
-// const ws = new WebSocket('ws://' + window.location.hostname)
 export default ws
